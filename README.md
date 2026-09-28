@@ -48,10 +48,11 @@ flowchart LR
 
 ## Install and invoke
 
-Clone or download this repository, then copy the skill folder:
+Clone this repository directly into your Codex skills directory:
 
 ```powershell
-Copy-Item -Recurse .\nami-ipod-lab "$env:USERPROFILE\.codex\skills\nami-ipod-lab"
+git clone https://github.com/81823650800wzy-sketch/nami-ipod-lab-skill.git `
+  "$env:USERPROFILE\.codex\skills\nami-ipod-lab"
 ```
 
 Restart or refresh Codex, then invoke it:
