@@ -39,7 +39,13 @@ Before the authorized write checkpoint:
 
 1. Reinspect the exact target and current installed app hashes.
 2. Verify the retained recovery artifact and known-working app candidate.
-3. Verify pinned upstream is clean and resident/tool hashes match.
+3. Verify pinned tracked upstream source and resident/tool hashes match. A known,
+   hash-checked untracked managed app stage may be expected; unrelated changes
+   invalidate the baseline. Inspect the installer preflight and dependency list.
+   Resolve compiler, Python packages and any required Rust tools in the exact
+   execution environment before attaching. `CARGO_NET_OFFLINE` only governs
+   Cargo; it does not prevent an installer from invoking apt or downloading tools.
+   Do not accept automatic dependency bootstrap as part of a device update.
 4. Attach the exact existing share; verify a sole matching unmounted disk.
 5. Run a fixed, bounded read-only readiness request and require exact length.
 6. Execute one reviewed app-only install with a timeout and fixed offline tools.
@@ -47,6 +53,15 @@ Before the authorized write checkpoint:
 Afterward, capture the resident trace before detach if supported. Detach, stop
 only the owned helper, wait for the Windows volume, and hash every installed
 package file. A successful installer exit without readback is incomplete evidence.
+
+Capture the real child exit status. In PowerShell, a quoted Bash `$?` can be
+expanded by the wrong shell; prefer a literal single-quoted Bash command and
+record `$LASTEXITCODE` immediately after `wsl.exe`. Do not run the installer
+again merely because an enclosing wrapper failed after it completed: inspect
+the original log and actual readback first. Use a cleanup/finally path that runs
+on success, failure and timeout. Start Windows helper processes hidden and track
+their PID; never terminate unrelated WSL sessions. Wait for the expected volume
+with a deadline rather than assuming a fixed sleep proves readiness.
 
 ## Diagnostic trace
 

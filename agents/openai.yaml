@@ -5,3 +5,5 @@ interface:
   icon_large: "./assets/nami-ipod-lab.svg"
   brand_color: "#0F766E"
   default_prompt: "Use $nami-ipod-lab to inspect, build, verify, or document a bounded NAMI update for an iPod nano 7G."
+policy:
+  allow_implicit_invocation: true

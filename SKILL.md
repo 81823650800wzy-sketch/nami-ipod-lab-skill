@@ -1,6 +1,6 @@
 ---
 name: nami-ipod-lab
-description: Safely inspect, build, diagnose, install, verify, and document custom character applications for an iPod nano 7G using NanoApps-style workflows. Use for bounded app updates, launch failures, input or animation tuning, resident RAM traces, evidence capture, and recovery-aware experiment planning; do not use as permission for firmware, DFU, partition, bootloader, driver, or destructive storage changes.
+description: Build, diagnose, verify and document iPod nano 7G NanoApps applications, including character players and arcade demos. Use for checked app updates, launch reboots, missing icons, input or animation tuning and resident traces. Requires project adapters for hardware access; does not authorize firmware, DFU, partition, bootloader or driver changes.
 ---
 
 # NAMI iPod Lab
@@ -10,6 +10,17 @@ development board. Separate source evidence, host tests, installation evidence,
 and owner-observed behavior. A successful build never proves hardware behavior.
 
 ## Route the request
+
+Resolve this skill folder from the loaded SKILL.md location, independently of
+the project working directory. Run `python <skill-dir>/scripts/doctor.py` once
+when installing or diagnosing invocation. It checks only the skill bundle;
+it never installs dependencies or accesses USB. Python 3.10+ is sufficient for
+the bundled helpers, with no third-party Python packages.
+
+For a new agent or machine, first read
+[references/agent-handoff.md](references/agent-handoff.md). This skill includes
+procedures and validators, **not** NanoApps, toolchains, a device executor or
+firmware. Missing adapters block device operations, not offline review.
 
 1. Read [references/safety-and-evidence.md](references/safety-and-evidence.md)
    before any real-device operation or hardware claim.
@@ -55,5 +66,8 @@ operation log, device readback, trace hash, owner observation, evidence status,
 and remaining unknowns. Update the experiment, hardware evidence, changelog,
 and resume point when the repository uses them.
 
-Use `scripts/validate_evidence.py <manifest.json>` to sanity-check a portable
-offline build manifest before packaging. This helper does no device access.
+Use `python <skill-dir>/scripts/validate_evidence.py <manifest.json>` for
+manifest consistency. It supports motion-player `outputs` and arcade `package`
+profiles. Add `--blob <candidate.hbapp>` to verify the actual artifact hash and
+HRL1 layout. Read [references/manifest-validation.md](references/manifest-validation.md)
+for accepted fields and limits. Neither PASS authorizes hardware execution.
